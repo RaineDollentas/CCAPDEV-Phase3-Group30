@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>About - Discboxd</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header>
+  <h1>Discboxd</h1>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="login.html">Login</a>
+    <a href="register.html">Register</a>
+    <a href="profile.html">Profile</a>
+    <a href="create-post.html">New Review</a>
+    <a href="about.html">About</a>
+  </nav>
+
+  <form id="search-form" action="index.html" method="get">
+    <input type="text" id="search-input" name="search" placeholder="Search reviews...">
+  </form>
+</header>
+
+<main>
+  <h2>About Discboxd</h2>
+
+  <p>
+    Discboxd is a music review forum web application where users can create accounts,
+    post reviews, comment on reviews, and interact with music-related content.
+  </p>
+
+  <h3>NPM Packages Used</h3>
+  <ul>
+    <li>express - web server and routing</li>
+    <li>mongoose - MongoDB object data modeling</li>
+    <li>cors - cross-origin request handling</li>
+    <li>express-session - session management</li>
+    <li>connect-mongo - MongoDB-backed session storage</li>
+    <li>bcrypt - password hashing</li>
+    <li>dotenv - environment variable management</li>
+    <li>nodemon - development auto-restart tool</li>
+  </ul>
+
+  <h3>Third-Party Libraries / Assets</h3>
+  <ul>
+    <li>MongoDB - database system</li>
+    <li>Node.js - JavaScript runtime</li>
+    <li>Custom local image assets for album covers</li>
+  </ul>
+
+  <h3>Project Notes</h3>
+  <p>
+    This project follows an MVC-style structure with models, routes/controllers,
+    database-backed CRUD operations, authentication, session handling, and validation.
+  </p>
+</main>
+
+<footer>
+  &copy; 2026 Discboxd
+</footer>
+
+<script src="js/data.js"></script>
+<script src="js/nav.js"></script>
+</body>
+</html>

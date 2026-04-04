@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Song Info - Discboxd</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header>
+  <h1>Discboxd</h1>
+
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="login.html">Login</a>
+    <a href="register.html">Register</a>
+    <a href="profile.html">Profile</a>
+    <a href="create-post.html">New Review</a>
+    <a href="about.html">About</a>
+  </nav>
+
+  <form id="search-form" action="index.html" method="get">
+    <input type="text" id="search-input" name="search" placeholder="Search reviews...">
+  </form>
+</header>
+
+<main>
+  <div id="song-info" class="post-card"></div>
+
+  <h3>Reviews</h3>
+  <section id="song-reviews"></section>
+</main>
+
+<footer>
+  &copy; 2026 Discboxd
+</footer>
+
+<script src="js/data.js"></script>
+<script src="js/song.js"></script>
+<script src="js/nav.js"></script>
+
+</body>
+</html>

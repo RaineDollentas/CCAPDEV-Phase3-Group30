@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Discboxd - Home</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  
+  <div id="bg-slideshow" aria-hidden="true"></div>
+
+<header>
+  <h1>Discboxd</h1>
+
+  
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="login.html">Login</a>
+    <a href="register.html">Register</a>
+    <a href="profile.html">Profile</a>
+    <a href="create-post.html">New Review</a>
+    <a href="about.html">About</a>
+  </nav>
+
+  <form id="search-form" action="index.html" method="get">
+    <input type="text" id="search-input" name="search" placeholder="Search reviews...">
+  </form>
+</header>
+
+ 
+
+<section class="hero" aria-hidden="false">
+  <div class="hero-inner">
+    <h2>Track albums and reviews you love.
+      <br>Share what’s good with friends.</h2>
+  </div>
+</section>
+
+<main>
+  <h2>Trending Songs/Albums</h2>
+  <div class="trending-area">
+    <button class="trending-arrow left" aria-label="Scroll left">‹</button>
+    <section id="trending-songs"></section>
+    <button class="trending-arrow right" aria-label="Scroll right">›</button>
+  </div>
+
+  <h2>Popular Reviews</h2>
+  <div class="popular-area">
+    <button class="trending-arrow left popular-left" aria-label="Scroll popular left">‹</button>
+    <section id="popular-posts"></section>
+    <button class="trending-arrow right popular-right" aria-label="Scroll popular right">›</button>
+  </div>
+
+  <div class="content-grid">
+    <div class="left-col">
+      <h3>Recent Reviews</h3>
+      <section id="recent-posts"></section>
+    </div>
+
+    <aside class="right-col">
+      <h3>Popular Playlists</h3>
+      <div id="sidebar-lists">
+     
+      </div>
+    </aside>
+  </div>
+</main>
+
+
+<footer>
+  &copy; 2026 Discboxd
+</footer>
+
+<script src="js/data.js"></script>
+<script src="js/main.js"></script>
+<script src="js/nav.js"></script>
+
+</body>
+</html>
