@@ -15,8 +15,17 @@ function sanitizeUser(user) {
     email: user.email || '',
     bio: user.bio || '',
     avatar: user.avatar || '',
-    createdAt: user.createdAt
+    createdAt: user.createdAt,
+    followerCount: Array.isArray(user.followers) ? user.followers.length : 0,
+    followingCount: Array.isArray(user.following) ? user.following.length : 0
   };
+}
+
+function sanitizeUserWithLists(user) {
+  const out = sanitizeUser(user);
+  out.followers = Array.isArray(user.followers) ? user.followers.map(f => String(f)) : [];
+  out.following = Array.isArray(user.following) ? user.following.map(f => String(f)) : [];
+  return out;
 }
 
 // POST /api/users/login
@@ -53,7 +62,20 @@ router.post('/login', async (req, res) => {
       req.session.cookie.expires = false; // session cookie
     }
 
-    return res.json({ user: sanitizeUser(user) });
+    // Ensure session is saved immediately and send response once saved
+    try {
+      req.session.save(err => {
+        if (err) {
+          console.error('Session save error:', err);
+          return res.status(500).json({ message: 'Server error' });
+        }
+        console.log('Session after login saved:', req.session);
+        return res.json({ user: sanitizeUser(user) });
+      });
+    } catch (e) {
+      console.error('Session save exception:', e);
+      return res.status(500).json({ message: 'Server error' });
+    }
   } catch (err) {
     console.error('Login error:', err);
     return res.status(500).json({ message: 'Server error' });
@@ -111,7 +133,20 @@ router.post('/register', async (req, res) => {
 
     req.session.userId = String(user._id);
 
-    return res.status(201).json({ user: sanitizeUser(user) });
+    // Save session before responding so cookie is set
+    try {
+      req.session.save(err => {
+        if (err) {
+          console.error('Session save error (register):', err);
+          return res.status(500).json({ message: 'Server error' });
+        }
+        console.log('Session after register saved:', req.session);
+        return res.status(201).json({ user: sanitizeUser(user) });
+      });
+    } catch (e) {
+      console.error('Session save exception (register):', e);
+      return res.status(500).json({ message: 'Server error' });
+    }
   } catch (err) {
     if (err && err.code === 11000) {
       if (err.keyPattern && err.keyPattern.email) {
@@ -152,7 +187,8 @@ router.get('/me', async (req, res) => {
       return res.status(401).json({ message: 'Not authenticated' });
     }
 
-    return res.json(sanitizeUser(user));
+    // For the logged-in user, include follower/following id lists so frontend can check follow state
+    return res.json(sanitizeUserWithLists(user));
   } catch (err) {
     console.error('Me route error:', err);
     return res.status(500).json({ message: 'Server error' });
@@ -187,6 +223,42 @@ router.get('/:id', async (req, res) => {
     return res.json(sanitizeUser(user));
   } catch (err) {
     console.error('Get single user error:', err);
+    return res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// POST /api/users/:id/follow  - toggle follow/unfollow target user
+router.post('/:id/follow', async (req, res) => {
+  try {
+    const sessionUser = req.session && req.session.userId;
+    if (!sessionUser) return res.status(401).json({ message: 'Not authenticated' });
+
+    if (String(sessionUser) === String(req.params.id)) return res.status(400).json({ message: 'Cannot follow yourself' });
+
+    const me = await User.findById(sessionUser);
+    const target = await User.findById(req.params.id);
+    if (!me || !target) return res.status(404).json({ message: 'User not found' });
+
+    const already = me.following && me.following.find(f => String(f) === String(target._id));
+    if (already) {
+      // unfollow
+      me.following = me.following.filter(f => String(f) !== String(target._id));
+      target.followers = target.followers.filter(f => String(f) !== String(me._id));
+      await me.save();
+      await target.save();
+      return res.json({ following: false, followerCount: target.followers.length, followingCount: me.following.length });
+    } else {
+      // follow
+      me.following = me.following || [];
+      target.followers = target.followers || [];
+      me.following.push(target._id);
+      target.followers.push(me._id);
+      await me.save();
+      await target.save();
+      return res.json({ following: true, followerCount: target.followers.length, followingCount: me.following.length });
+    }
+  } catch (err) {
+    console.error('Follow toggle error:', err);
     return res.status(500).json({ message: 'Server error' });
   }
 });
@@ -294,3 +366,13 @@ router.put('/:id', async (req, res) => {
 });
 
 module.exports = router;
+
+// Development helper: expose session contents for debugging (do NOT enable in production)
+// Access: GET /api/users/debug/session
+router.get('/debug/session', (req, res) => {
+  try {
+    return res.json({ session: req.session || null, cookies: req.cookies || null });
+  } catch (e) {
+    return res.status(500).json({ error: 'debug error' });
+  }
+});

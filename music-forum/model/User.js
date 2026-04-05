@@ -26,6 +26,8 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: '/assets/avatars/default.jpg'
   },
+  followers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+  following: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   createdAt: {
     type: Date,
     default: Date.now

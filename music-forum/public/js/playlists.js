@@ -1,5 +1,3 @@
-// Simple client-side playlists definition
-// Each playlist references song indexes (positions) from the `songs` array
 window.playlists = [
   {
     id: 'pl-1',
@@ -21,7 +19,7 @@ window.playlists = [
   }
 ];
 
-// Expose helper to find playlist by id
+
 window.getPlaylistById = function(id) {
   return (window.playlists || []).find(p => p.id === id) || null;
 };

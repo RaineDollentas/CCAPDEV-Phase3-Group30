@@ -252,7 +252,6 @@ h2, h3 {
   line-height: 1.4;
 }
 
-/* Ensure long unbroken review text wraps instead of overflowing the card */
 .post-card p, .post-body, .comment .comment-text {
   overflow-wrap: anywhere;
   word-break: break-word;
@@ -440,10 +439,8 @@ footer {
 
 .post-card h3, .post-card p, .post-card small { text-align: center; width: 100%; }
 
-/* Ensure comment and small links use the app green accent */
 .comment a, small a { color: #9ef18d; }
 
-/* Search result avatar (small, circular) */
 .post-card img.search-avatar {
   width: 72px;
   height: 72px;
@@ -453,7 +450,7 @@ footer {
   border: 2px solid rgba(158,241,141,0.12);
 }
 
-/* editable star controls when editing a post inline */
+
 .edit-stars { margin: 0.6rem 0; }
 .edit-stars .edit-star { color: #9ef18d; font-size: 1.2rem; cursor: pointer; margin-right: 6px; }
 .edit-title { font-size: 1.1rem; border: 1px solid #2c3440; background: #14181c; color: #d8e0e8 }
@@ -547,7 +544,7 @@ footer {
   padding: 0;
   border-radius: 10px;
   box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-  z-index: 120; /* ensure it sits above fixed header */
+  z-index: 120; 
 }
 .back-button:hover { background: #7edc73; }
 
@@ -634,7 +631,7 @@ footer {
   border-left: 2px solid rgba(255,255,255,0.03);
 }
 
-/* Only left-align the Recent Reviews cards and ensure text wraps */
+
 .left-col #recent-posts .post-card h3,
 .left-col #recent-posts .post-card p,
 .left-col #recent-posts .post-card small {
@@ -692,7 +689,7 @@ footer {
   border: 2px solid rgba(0,0,0,0.25);
 }
 
-/* Styling for album cell in playlist table to ensure visibility */
+
 .playlist-album {
   color: #b8c2cc;
   font-size: 0.95rem;
@@ -703,7 +700,7 @@ footer {
 
 .right-col #sidebar-lists .post-card > div { position: relative; height: 60px; overflow: hidden; }
 
-/* Playlist card meta alignment */
+
 .right-col #sidebar-lists .post-card a { display: block; text-decoration: none; }
 .right-col #sidebar-lists .post-card .playlist-meta { text-align: left; padding: 0.2rem 0; }
 .right-col #sidebar-lists .post-card .playlist-meta h4 { margin: 0; color: #9ef18d; text-align: left; }

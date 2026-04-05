@@ -38,14 +38,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (playlist.songIndexes && Array.isArray(playlist.songIndexes)) {
       indexes = playlist.songIndexes.slice();
     } else if (playlist.songs && Array.isArray(playlist.songs) && window.songs && Array.isArray(window.songs)) {
-      // if songs contained ids, try to map to songs array
       indexes = playlist.songs.map(s => {
         const idx = window.songs.findIndex(ss => String(ss.id) === String(s));
         return idx >= 0 ? idx : null;
       }).filter(v => v !== null);
     }
 
-    // If songs haven't loaded yet, show a loading row instead of transient "Unknown" entries
     if ((!window.songs || !Array.isArray(window.songs) || window.songs.length === 0) && indexes.length > 0) {
       html += `
         <tr>
@@ -57,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const s = (window.songs && typeof si === 'number' && si >= 0 && si < window.songs.length) ? window.songs[si] : null;
         const titleText = s ? s.title : 'Unknown';
         const albumText = s ? (s.album || s.albumTitle || '') : '';
-        // Debug: log album values so dev can see what's present
+      
         try { console.log('playlist row', i+1, 'songIndex=', si, 'album=', s && s.album, 'albumText=', albumText); } catch (e) {}
         const cover = s ? s.cover : '';
         html += `
@@ -84,26 +82,24 @@ document.addEventListener('DOMContentLoaded', () => {
     html += `</tbody></table></div>`;
     root.innerHTML = html;
 
-    // Re-bind back button (render replaces DOM)
     const newBack = document.getElementById('back-button');
     if (newBack) newBack.addEventListener('click', () => history.back());
   }
 
-  // If data already loaded, render immediately; otherwise wait for dataChanged
   function findAndRender() {
     const pl = window.getPlaylistById ? window.getPlaylistById(pid) : (window.playlists || []).find(p=>p.id===pid);
     if (pl) {
       render(pl);
     } else {
-      // fallback: if pid is numeric index
+     
       const idx = Number(pid);
       if (!Number.isNaN(idx) && window.playlists && window.playlists[idx]) render(window.playlists[idx]);
       else render(null);
     }
   }
 
-  // Attempt to render immediately (even if songs array is empty)
+
   findAndRender();
-  // Also re-render when data becomes available
+
   window.addEventListener('dataChanged', findAndRender);
 });
