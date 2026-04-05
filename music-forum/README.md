@@ -5,6 +5,10 @@ Discboxd is a music review forum web application where users can create accounts
 - Raine Anne S. Dollentas
 CCAPDEV MCO SECTION S08 - Group 30 
 ---
+## Deployed Application
+
+Live website link:
+https://ccapdev-phase3-group30.onrender.com
 
 ## Features
 
@@ -70,8 +74,7 @@ music-forum/
 ├── seed.js        # Database seeding script
 ├── package.json
 └── README.md
-
----
+```
 
 ## Requirements
 
@@ -166,12 +169,6 @@ profile updates
 About Page
 
 The application includes an About page that lists the NPM packages and third-party libraries used in the project.
-
-## Deployed Application
-
-Live website link:
-
-https://ccapdev-phase3-group30.onrender.com
 
 ## Additional Notes
 This project follows an MVC-style structure using models, routes/controllers, and frontend views.
