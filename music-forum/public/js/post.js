@@ -86,7 +86,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     const postCard = document.querySelector(`#post-card-${postId}`);
     if (!postCard) return;
 
-    // replace title, body and stars with editable controls
     const titleEl = postCard.querySelector('h3');
     const bodyEl = postCard.querySelector('p');
     const starsEl = postCard.querySelector('.stars');
@@ -229,15 +228,34 @@ document.addEventListener("DOMContentLoaded", async () => {
         // set button visuals: filled only if the count increased (vote set).
         const postCard = document.querySelector(`#post-card-${postId}`);
         if (postCard) {
+          const upvoteCountEl = postCard.querySelector('.upvote-count');
+          const downvoteCountEl = postCard.querySelector('.downvote-count');
+          const scoreEl = postCard.querySelector('.post-score');
+
+          if (upvoteCountEl) upvoteCountEl.textContent = post.upvotes;
+          if (downvoteCountEl) downvoteCountEl.textContent = post.downvotes;
+          if (scoreEl) scoreEl.textContent = post.score;
+
           const upBtn = postCard.querySelector('.upvote-post');
           const downBtn = postCard.querySelector('.downvote-post');
+
           if (upBtn && downBtn) {
             if (type === 'up') {
-              if (data.upvotes > prevUp) { upBtn.textContent = '▲'; downBtn.textContent = '▽'; }
-              else { upBtn.textContent = '△'; downBtn.textContent = '▽'; }
+              if (data.upvotes > prevUp) {
+                upBtn.textContent = '▲';
+                downBtn.textContent = '▽';
+              } else {
+                upBtn.textContent = '△';
+                downBtn.textContent = '▽';
+              }
             } else {
-              if (data.downvotes > prevDown) { upBtn.textContent = '△'; downBtn.textContent = '▼'; }
-              else { upBtn.textContent = '△'; downBtn.textContent = '▽'; }
+              if (data.downvotes > prevDown) {
+                upBtn.textContent = '△';
+                downBtn.textContent = '▼';
+              } else {
+                upBtn.textContent = '△';
+                downBtn.textContent = '▽';
+              }
             }
           }
         }
@@ -440,13 +458,12 @@ document.addEventListener("DOMContentLoaded", async () => {
           body: JSON.stringify({ text: newText })
         });
         if (res.ok) {
-          // update local copy
-          const c = comments.find(c=>c.id===id);
-          if (c) c.text = newText;
+          const c = comments.find(c => c.id === id);
+          if (c) {
+            c.text = newText;
+            c.edited = true;
+          }
           renderComments();
-        } else {
-          const err = await res.json().catch(()=>({message:'Error'}));
-          alert(err.message || 'Failed to update comment');
         }
       }
 

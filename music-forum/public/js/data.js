@@ -18,7 +18,7 @@ async function fetchUsers() {
 
     users = await res.json();
 
-    // Normalize users: ensure `id` and `username` exist in expected places
+  
     users = users.map(u => ({
       ...u,
       id: String(u._id || u.id),
@@ -44,7 +44,7 @@ async function fetchSongs() {
 
     songs = await res.json();
 
-    // Normalize song objects: ensure `id` and `cover` fields exist for frontend
+
     songs = songs.map(s => ({
       ...s,
       id: String(s._id || s.id),
@@ -72,7 +72,6 @@ async function fetchPosts() {
 
     posts = await res.json();
 
-    // Normalize posts: add id, authorId and songId (strings) and fill missing cover
     posts = posts.map(p => {
       const np = { ...p };
 
@@ -126,7 +125,7 @@ async function initData() {
   await fetchPosts();
   await fetchComments();
 
-  // Expose normalized data on `window` for other scripts that expect it
+
   try {
     window.users = users;
     window.songs = songs;

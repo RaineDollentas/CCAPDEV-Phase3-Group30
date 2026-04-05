@@ -5,8 +5,8 @@ const songSchema = new mongoose.Schema({
   artist: { type: String, required: true },
   album: { type: String },
   genre: { type: String },
-  duration: { type: String }, // e.g. '4:05'
-  albumCover: { type: String }, // URL or path to image
+  duration: { type: String }, 
+  albumCover: { type: String }, 
   description: { type: String },
   releaseDate: { type: Date },
   createdAt: { type: Date, default: Date.now }

@@ -1,6 +1,8 @@
 // -------------------- BACKEND-FETCHED DATA --------------------
-// Use shared `users`, `songs`, `posts`, `comments` from `data.js`.
-// Wait for `data.js` to finish loading data and dispatch `dataChanged`.
+window.addEventListener("pageshow", async () => {
+  await refreshHomePage();
+});
+
 window.addEventListener('dataChanged', () => {
   try {
     initPage();
@@ -13,6 +15,32 @@ if (typeof posts !== 'undefined' && posts.length) {
   try { initPage(); } catch (e) { console.error(e); }
 }
 
+function resetHomeSections() {
+  const trendingContainer = document.getElementById("trending-songs");
+  const popularContainer = document.getElementById("popular-posts");
+  const recentContainer = document.getElementById("recent-posts");
+
+  if (trendingContainer) trendingContainer.innerHTML = "";
+  if (popularContainer) popularContainer.innerHTML = "";
+  if (recentContainer) recentContainer.innerHTML = "";
+
+  currentIndex = 0;
+
+  const loadMoreBtn = document.getElementById("load-more-btn");
+  if (loadMoreBtn) loadMoreBtn.style.display = "block";
+}
+
+async function refreshHomePage() {
+  try {
+    if (typeof initData === "function") {
+      await initData();
+    }
+    resetHomeSections();
+    initPage();
+  } catch (e) {
+    console.error("Error refreshing homepage:", e);
+  }
+}
 // -------------------- INIT PAGE --------------------
 function initPage() {
   handleSearch();

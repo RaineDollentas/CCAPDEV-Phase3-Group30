@@ -46,7 +46,7 @@ app.use(session({
   }
 }));
 
-// Log session cookie settings to help debug cookie delivery in dev
+
 console.log('Session cookie settings:', {
   NODE_ENV: process.env.NODE_ENV || 'undefined',
   cookieSecure: (process.env.NODE_ENV === 'production'),

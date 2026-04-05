@@ -9,7 +9,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   let loggedInUser = null;
   try {
     const res = await fetch('/api/users/me', { credentials: 'include' }); 
-    // 'credentials: include' ensures cookies/session is sent
     if (res.ok) {
       loggedInUser = await res.json(); 
     }
