@@ -2,6 +2,8 @@
 
 Discboxd is a music review forum web application where users can create accounts, write reviews for songs, comment on posts, vote on posts and comments, follow other users, and create playlists.
 
+- Raine Anne S. Dollentas
+CCAPDEV MCO SECTION S08 - Group 30 
 ---
 
 ## Features
@@ -69,6 +71,8 @@ music-forum/
 ├── package.json
 └── README.md
 
+---
+
 ## Requirements
 
 Before running the project locally, make sure you have:
@@ -92,6 +96,8 @@ MONGODB_URI=mongodb://127.0.0.1:27017/musicForum
 SESSION_SECRET=your_session_secret_here
 NODE_ENV=development
 PORT=3000
+
+---
 
 ## Notes
 If you are using MongoDB Atlas, replace MONGODB_URI with your own Atlas connection string.
