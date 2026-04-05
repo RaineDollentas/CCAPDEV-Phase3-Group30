@@ -46,6 +46,13 @@ app.use(session({
   }
 }));
 
+// Log session cookie settings to help debug cookie delivery in dev
+console.log('Session cookie settings:', {
+  NODE_ENV: process.env.NODE_ENV || 'undefined',
+  cookieSecure: (process.env.NODE_ENV === 'production'),
+  sameSite: 'lax'
+});
+
 app.use((req, res, next) => {
   if (req.session && req.session.userId && req.session.rememberMe) {
     req.session.cookie.maxAge = 1000 * 60 * 60 * 24 * 21; // refresh to 3 weeks
@@ -76,4 +83,5 @@ app.get('/', (req, res) => {
 // Start server
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
+  console.log('Tip: If running locally over http, ensure NODE_ENV!=production so cookie.secure is false.');
 });

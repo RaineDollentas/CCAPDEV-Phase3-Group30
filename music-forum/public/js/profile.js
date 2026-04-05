@@ -94,7 +94,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         <div class="profile-meta">
           <h2 id="profile-username">${safeUsername}</h2>
           <p id="profile-bio">${safeBio}</p>
+          <div id="follow-stats" style="margin-top:0.5rem; color:#b8c2cc">
+            <span id="follower-count">${profileUser.followerCount || 0} followers</span>
+            &nbsp;·&nbsp;
+            <span id="following-count">${profileUser.followingCount || 0} following</span>
+          </div>
           ${canEdit ? '<button id="edit-profile">Edit Profile</button>' : ''}
+          ${(!canEdit && loggedInUser) ? '<button id="follow-btn" style="margin-top:0.5rem"></button>' : ''}
         </div>
       </div>
     </div>
@@ -140,6 +146,53 @@ document.addEventListener("DOMContentLoaded", async () => {
   `;
 
   if (canEdit) setupEditProfile(profileUser);
+
+  // Setup follow button if present
+  const followBtn = document.getElementById('follow-btn');
+  if (followBtn) {
+    const isFollowing = loggedInUser && Array.isArray(loggedInUser.following) && loggedInUser.following.includes(profileUser.id);
+    followBtn.textContent = isFollowing ? 'Unfollow' : 'Follow';
+    followBtn.addEventListener('click', async () => {
+      try {
+        followBtn.disabled = true;
+        const res = await fetch(`/api/users/${profileUser.id}/follow`, {
+          method: 'POST',
+          credentials: 'include'
+        });
+        const payload = await res.json().catch(()=>({}));
+        if (!res.ok) {
+          alert(payload.message || 'Failed to update follow status');
+          followBtn.disabled = false;
+          return;
+        }
+
+        // Update UI counts
+        const followerCountEl = document.getElementById('follower-count');
+        const followingCountEl = document.getElementById('following-count');
+        if (payload.followerCount !== undefined) followerCountEl.textContent = `${payload.followerCount} followers`;
+        if (payload.followingCount !== undefined) followingCountEl.textContent = `${payload.followingCount} following`;
+
+        // Update loggedInUser.following list client-side
+        if (loggedInUser) {
+          loggedInUser.following = loggedInUser.following || [];
+          if (payload.following) {
+            // now following
+            if (!loggedInUser.following.includes(profileUser.id)) loggedInUser.following.push(profileUser.id);
+            followBtn.textContent = 'Unfollow';
+          } else {
+            // unfollowed
+            loggedInUser.following = loggedInUser.following.filter(id => id !== profileUser.id);
+            followBtn.textContent = 'Follow';
+          }
+        }
+
+        followBtn.disabled = false;
+      } catch (err) {
+        console.error(err);
+        followBtn.disabled = false;
+      }
+    });
+  }
 
   const showAllPostsBtn = document.getElementById("show-all-posts");
   if (showAllPostsBtn) {
