@@ -285,24 +285,28 @@ function setupTrendingArrows() {
 function renderSidebarPlaylists() {
   const container = document.getElementById('sidebar-lists');
   if (!container) return;
-
   container.innerHTML = '';
 
-  const playlists = [
-    { title: 'Chill Guitar Moods', author: 'curator1', covers: songs.slice(0,4).map(s => s.cover) },
-    { title: 'Classic Rock Essentials', author: 'curator2', covers: songs.slice(3,7).map(s => s.cover) },
-    { title: 'Late Night Vibes', author: 'curator3', covers: songs.slice(5,9).map(s => s.cover) }
+  const pls = window.playlists && window.playlists.length ? window.playlists : [
+    { id: 'pl-fallback-1', title: 'Chill Guitar Moods', author: 'Admin', covers: songs.slice(0,4).map(s => s.cover), songIndexes: [0,1,2,3] },
   ];
 
-  playlists.forEach(pl => {
+  pls.forEach((pl, idx) => {
     const card = document.createElement('div');
     card.className = 'post-card';
-    const collage = pl.covers.slice(0,4).map((c,i) => `<img src="${c}" class="playlist-thumb" style="left:${i*12}px;z-index:${10-i}">`).join('');
-    card.innerHTML = `
+    // prepare covers from either covers array or songIndexes
+    const covers = pl.covers || (pl.songIndexes ? pl.songIndexes.map(i=>songs[i] && songs[i].cover).filter(Boolean) : []);
+    const collage = (covers || []).slice(0,4).map((c,i) => `<img src="${c}" class="playlist-thumb" style="left:${i*12}px;z-index:${10-i}">`).join('');
+    const link = document.createElement('a');
+    link.href = `playlist.html?pl=${encodeURIComponent(pl.id || ('pl-' + idx))}`;
+    link.innerHTML = `
       <div style="position:relative;height:60px;margin-bottom:0.6rem">${collage}</div>
-      <h4 style="margin:0 0 0.25rem 0">${pl.title}</h4>
-      <small>by ${pl.author} | ${pl.covers.length} tracks</small>
+      <div class="playlist-meta">
+        <h4 style="margin:0 0 0.25rem 0">${pl.title}</h4>
+        <small>by Admin | ${(covers || []).length} tracks</small>
+      </div>
     `;
+    card.appendChild(link);
     container.appendChild(card);
   });
 }

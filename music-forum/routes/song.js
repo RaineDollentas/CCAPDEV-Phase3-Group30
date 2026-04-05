@@ -12,6 +12,7 @@ router.get('/', async (req, res) => {
       id: String(s._id),
       title: s.title,
       artist: s.artist,
+      album: s.album || s.albumTitle || s.albumName || '',
       cover: s.albumCover || s.cover || null,
       releaseDate: s.releaseDate,
       description: s.description || ''
@@ -29,7 +30,7 @@ router.get('/:id', async (req, res) => {
     console.log('GET /api/songs/:id ->', req.params.id);
     const song = await Song.findById(req.params.id);
     if (!song) return res.status(404).json({ error: 'Song not found' });
-    res.json({ id: String(song._id), title: song.title, artist: song.artist, cover: song.albumCover || song.cover, releaseDate: song.releaseDate, description: song.description || '' });
+    res.json({ id: String(song._id), title: song.title, artist: song.artist, album: song.album || song.albumTitle || song.albumName || '', cover: song.albumCover || song.cover, releaseDate: song.releaseDate, description: song.description || '' });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Failed to fetch song' });

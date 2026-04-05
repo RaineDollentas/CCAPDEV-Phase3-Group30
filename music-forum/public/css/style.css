@@ -234,17 +234,10 @@ h2, h3 {
   gap: 1.5rem;
 }
 /* POST CARD */
-.post-card {
-  background-color: #1f262d;
-  padding: 1.2rem;
-  border-radius: 8px;
-  border: 1px solid #2c3440;
-  transition: transform 0.2s, box-shadow 0.2s;
-}
-
-.post-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.6);
+.post-card p {
+  font-size: 0.95rem;
+  color: #b8c2cc;
+  line-height: 1.4;
 }
 
 .post-card h3 {
@@ -259,6 +252,11 @@ h2, h3 {
   line-height: 1.4;
 }
 
+/* Ensure long unbroken review text wraps instead of overflowing the card */
+.post-card p, .post-body, .comment .comment-text {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
 .post-card small {
   display: block;
   margin-top: 0.8rem;
@@ -440,6 +438,11 @@ footer {
   object-fit: cover;
 }
 
+.post-card h3, .post-card p, .post-card small { text-align: center; width: 100%; }
+
+/* Ensure comment and small links use the app green accent */
+.comment a, small a { color: #9ef18d; }
+
 /* Search result avatar (small, circular) */
 .post-card img.search-avatar {
   width: 72px;
@@ -534,12 +537,17 @@ footer {
   background: #9ef18d;
   border: 1px solid rgba(0,0,0,0.12);
   color: #14181c;
-  font-size: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
   cursor: pointer;
-  padding: 0.35rem 0.6rem;
-  border-radius: 8px;
-  box-shadow: 0 6px 14px rgba(0,0,0,0.45);
-  z-index: 40;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  z-index: 120; /* ensure it sits above fixed header */
 }
 .back-button:hover { background: #7edc73; }
 
@@ -625,6 +633,19 @@ footer {
   box-shadow: none;
   border-left: 2px solid rgba(255,255,255,0.03);
 }
+
+/* Only left-align the Recent Reviews cards and ensure text wraps */
+.left-col #recent-posts .post-card h3,
+.left-col #recent-posts .post-card p,
+.left-col #recent-posts .post-card small {
+  text-align: left;
+}
+
+.left-col #recent-posts .post-card .post-body,
+.left-col #recent-posts .post-card p {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
 .left-col #recent-posts .post-card img.album-cover {
   width: 84px;
   height: 84px;
@@ -671,8 +692,22 @@ footer {
   border: 2px solid rgba(0,0,0,0.25);
 }
 
+/* Styling for album cell in playlist table to ensure visibility */
+.playlist-album {
+  color: #b8c2cc;
+  font-size: 0.95rem;
+  line-height: 1.2;
+  white-space: normal;
+}
+
 
 .right-col #sidebar-lists .post-card > div { position: relative; height: 60px; overflow: hidden; }
+
+/* Playlist card meta alignment */
+.right-col #sidebar-lists .post-card a { display: block; text-decoration: none; }
+.right-col #sidebar-lists .post-card .playlist-meta { text-align: left; padding: 0.2rem 0; }
+.right-col #sidebar-lists .post-card .playlist-meta h4 { margin: 0; color: #9ef18d; text-align: left; }
+.right-col #sidebar-lists .post-card .playlist-meta small { display: block; margin-top: 0.35rem; color: #b8c2cc; font-weight: 600; text-align: left; }
 
 @media (max-width: 900px) {
   .content-grid { grid-template-columns: 1fr; }

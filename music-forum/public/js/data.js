@@ -48,7 +48,9 @@ async function fetchSongs() {
     songs = songs.map(s => ({
       ...s,
       id: String(s._id || s.id),
-      cover: s.albumCover || s.cover || 'assets/covers/nirvana.jfif'
+      cover: s.albumCover || s.cover || 'assets/covers/nirvana.jfif',
+      album: s.album || s.albumTitle || s.albumName || '',
+      artist: s.artist || (s.artists && Array.isArray(s.artists) ? s.artists.join(', ') : s.artistName) || ''
     }));
 
     console.log('Songs loaded:', songs.length);
@@ -123,6 +125,16 @@ async function initData() {
   await fetchSongs();
   await fetchPosts();
   await fetchComments();
+
+  // Expose normalized data on `window` for other scripts that expect it
+  try {
+    window.users = users;
+    window.songs = songs;
+    window.posts = posts;
+    window.comments = comments;
+  } catch (e) {
+    console.error('Error exposing data on window:', e);
+  }
 
   // Trigger event for other scripts
   try {
